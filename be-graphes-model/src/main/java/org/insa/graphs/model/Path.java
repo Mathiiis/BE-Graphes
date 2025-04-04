@@ -186,7 +186,6 @@ public class Path {
      * @return true if the path is valid, false otherwise.
      */
     public boolean isValid() {
-<<<<<<< Updated upstream
 
         if(this.isEmpty()) {
             return true;
@@ -211,13 +210,8 @@ public class Path {
                 }
             }
             return true;
-        } 
-
-=======
-        if (arcs.isEmpty() & (size() == 1)  ) {
-            // TODO:
         }
->>>>>>> Stashed changes
+
         return false;
     }
 
