@@ -186,6 +186,7 @@ public class Path {
      * @return true if the path is valid, false otherwise.
      */
     public boolean isValid() {
+<<<<<<< Updated upstream
 
         if(this.isEmpty()) {
             return true;
@@ -212,6 +213,11 @@ public class Path {
             return true;
         } 
 
+=======
+        if (arcs.isEmpty() & (size() == 1)  ) {
+            // TODO:
+        }
+>>>>>>> Stashed changes
         return false;
     }
 
@@ -219,11 +225,13 @@ public class Path {
      * Compute the length of this path (in meters).
      *
      * @return Total length of the path (in meters).
-     * @deprecated Need to be implemented.
      */
     public float getLength() {
-        // TODO:
-        return 0;
+        float length = 0;
+        for (Arc arc : arcs) {
+            length += arc.getLength();
+        }
+        return length;
     }
 
     /**
@@ -232,11 +240,9 @@ public class Path {
      * @param speed Speed to compute the travel time.
      * @return Time (in seconds) required to travel this path at the given speed (in
      *         kilometers-per-hour).
-     * @deprecated Need to be implemented.
      */
     public double getTravelTime(double speed) {
-        // TODO:
-        return 0;
+        return getLength() * 3600.0 / (speed * 1000.0);
     }
 
     /**
@@ -244,11 +250,13 @@ public class Path {
      * every arc.
      *
      * @return Minimum travel time to travel this path (in seconds).
-     * @deprecated Need to be implemented.
      */
     public double getMinimumTravelTime() {
-        // TODO:
-        return 0;
+        double minimumTravelTime = 0.0;
+        for (Arc arc : arcs) {
+            minimumTravelTime += arc.getTravelTime(arc.getRoadInformation().getMaximumSpeed());
+        }
+        return minimumTravelTime;
     }
 
 }
