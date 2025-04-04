@@ -49,6 +49,13 @@ public class Path {
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
         // TODO:
+
+        if (nodes.size() == 0) {
+            throw new IllegalArgumentException(
+                    "Cannot create a path from an empty list of nodes.");
+        }
+
+        
         return new Path(graph, arcs);
     }
 
