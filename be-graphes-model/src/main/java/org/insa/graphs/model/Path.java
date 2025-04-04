@@ -30,7 +30,7 @@ public class Path {
     public static Path createFastestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        // TODO:
+        // TODO: 
         return new Path(graph, arcs);
     }
 
@@ -184,10 +184,34 @@ public class Path {
      * </ul>
      *
      * @return true if the path is valid, false otherwise.
-     * @deprecated Need to be implemented.
      */
     public boolean isValid() {
-        // TODO:
+
+        if(this.isEmpty()) {
+            return true;
+        }
+
+        if (this.arcs.isEmpty()) {
+            return true;
+        }
+
+        if (this.arcs.size() == 1) {
+            if (this.arcs.get(0).getOrigin() == this.origin) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        } 
+        else if (this.arcs.size() > 1){
+            for (int i = 0; i < this.arcs.size() - 1; i++) {
+                if (this.arcs.get(i).getDestination() != this.arcs.get(i + 1).getOrigin()) {
+                    return false;
+                }
+            }
+            return true;
+        } 
+
         return false;
     }
 
