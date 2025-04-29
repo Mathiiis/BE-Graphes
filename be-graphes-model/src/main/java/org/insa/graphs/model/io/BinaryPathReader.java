@@ -26,7 +26,7 @@ public class BinaryPathReader extends BinaryReader implements PathReader {
         super(MAGIC_NUMBER, VERSION, dis);
     }
 
-    @SuppressWarnings("deprecation")
+    //@SuppressWarnings("deprecation")
     @Override
     public Path readPath(Graph graph) throws IOException {
 

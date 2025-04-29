@@ -137,15 +137,15 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
         // Trouver l'index de l'élément à supprimer
         int index = -1;
         
-        // Recherche linéaire de l'élément exact (même référence)
+        // Recherche de l'élément
         for (int i = 0; i < currentSize; i++) {
-            if (array.get(i) == x) {  // Utilisation de == au lieu de equals()
+            if (array.get(i) == x) {
                 index = i;
                 break;
             }
         }
         
-        // Si l'élément n'est pas trouvé, lever une exception
+        // Si l'élément introuvable, exception
         if (index == -1) {
             throw new ElementNotFoundException(x);
         }
@@ -164,6 +164,7 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
             }
         }
     }
+
     @Override
     public E findMin() throws EmptyPriorityQueueException {
         if (isEmpty())
