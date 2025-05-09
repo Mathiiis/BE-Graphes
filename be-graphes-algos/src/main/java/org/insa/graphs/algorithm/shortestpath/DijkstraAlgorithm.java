@@ -48,6 +48,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         while (!labels[data.getDestination().getId()].isMarque()) {
             Label x = tas.deleteMin();
             x.setMarque(true);
+            notifyNodeMarked(x.getSommet_courant());
 
             for(Arc arc : x.getSommet_courant().getSuccessors()){
                 
@@ -62,6 +63,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                         try {
                             tas.remove(y);
                         } catch (ElementNotFoundException e) {
+                            notifyNodeReached(y.getSommet_courant());
                         }
                         tas.insert(y); 
                     }
