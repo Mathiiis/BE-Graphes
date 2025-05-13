@@ -54,12 +54,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 
                 Label y = labels[arc.getDestination().getId()];
                 if (!y.isMarque()) {
-                    double newCost = x.getCout_realise() + data.getCost(arc);
-                    
+                    double newCost = x.getCout_realise() + data.getCost(arc); // PCC en distance
+                    //double newCost = x.getCout_realise() + arc.getMinimumTravelTime(); // PCC en temps
                     if (newCost < y.getCout_realise()) {
                         y.setCoutRealise(newCost);
                         y.setPere(arc);
-
+                        
                         try {
                             tas.remove(y);
                         } catch (ElementNotFoundException e) {
@@ -67,6 +67,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                         }
                         tas.insert(y); 
                     }
+                    System.out.println("New cost " + y.getSommet_courant().getId() + ": " + y.getCost() + "\n");
                 }
             }
         }

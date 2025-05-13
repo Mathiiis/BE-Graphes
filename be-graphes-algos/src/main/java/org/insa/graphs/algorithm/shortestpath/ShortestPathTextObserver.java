@@ -15,7 +15,7 @@ public class ShortestPathTextObserver implements ShortestPathObserver {
     @Override
     public void notifyOriginProcessed(Node node) {
         // TODO Auto-generated method stub
-
+        stream.println("Origin " + node.getId() + "processed");
     }
 
     @Override
@@ -31,7 +31,7 @@ public class ShortestPathTextObserver implements ShortestPathObserver {
     @Override
     public void notifyDestinationReached(Node node) {
         // TODO Auto-generated method stub
-
+        stream.println("Destination " + node.getId() + "reached");
     }
 
 }
