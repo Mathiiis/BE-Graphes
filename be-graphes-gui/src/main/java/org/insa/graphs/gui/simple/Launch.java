@@ -53,51 +53,66 @@ public class Launch {
         return basicDrawing;
     }
 
+    static void testPath(final String mapName, final String pathName) throws java.io.IOException {
+
+        final Graph graph;
+        
+        // create path reader
+        try (final GraphReader reader = new BinaryGraphReader(new DataInputStream(
+                new BufferedInputStream(new FileInputStream(mapName))))) {
+
+            graph = reader.read();
+        }
+
+        // draw the graph
+        final Drawing drawingMapRoutiere;
+        try {
+            drawingMapRoutiere = createDrawing();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create drawing", e);
+        }
+        drawingMapRoutiere.drawGraph(graph);
+
+        // create path reader
+        try (final PathReader pathReader = new BinaryPathReader(
+            new DataInputStream(new BufferedInputStream(
+            new FileInputStream(pathName)))) ) {
+
+            final Path pathMap = pathReader.readPath(graph);
+
+            // draw path on the map
+            drawingMapRoutiere.drawPath(pathMap);
+        }
+    }
+
     public static void main(String[] args) throws Exception {
 
         // visit these directory to see the list of available files on commetud.
         // map routière : insa
-        final String mapNameRoutiere = "../Maps/insa.mapgr";
+        final String mapNameRoutiere = "../Maps/belgium.mapgr";
         final String mapNameNonRoutiere = "../Maps/carre.mapgr";
-        final String pathName = "../Maps/path_fr31insa_rangueil_r2.path";
+        final String pathName = "../Maps/path_be_173101_302442.path";
 
-        final int originID = 552;
+        // origin
+        final int originID = 173101;
         final Node origin;
 
-        final int destID = 526;
+        // destination
+        final int destID = 302442;
         final Node destination;
 
-        final Graph graphRoutiere;
-        final Graph graphNonRoutiere;
-        final Path pathMapRoutiere;
-        final Path pathMapNonRoutiere;
+        testPath(mapNameRoutiere, pathName);
 
-        // create a graph reader
-        try (final GraphReader reader = new BinaryGraphReader(new DataInputStream(
-                new BufferedInputStream(new FileInputStream(mapNameRoutiere))))) {
 
-            graphRoutiere = reader.read();
-        }
-
-        try (final GraphReader reader = new BinaryGraphReader(new DataInputStream(
-                new BufferedInputStream(new FileInputStream(mapNameNonRoutiere))))) {
-
-            graphNonRoutiere = reader.read();
-        }
-
-        // create the drawing
-        final Drawing drawingMapRoutiere = createDrawing();
-        // final Drawing drawingMapNonRoutiere = createDrawing();
-
-        drawingMapRoutiere.drawGraph(graphRoutiere);
+        // drawingMapNonRoutiere.drawGraph(graphRoutiere2);
         // Initialize origin and destination before using them
-        origin = graphRoutiere.get(originID);
-        destination = graphRoutiere.get(destID);
-        drawingMapRoutiere.drawMarker(origin.getPoint(), Color.GREEN, Color.GREEN, AlphaMode.OPAQUE);
-        drawingMapRoutiere.drawMarker(destination.getPoint(), Color.RED, Color.RED, AlphaMode.OPAQUE);
+        // origin = graphRoutiere2.get(originID);
+        // destination = graphRoutiere2.get(destID);
+        // drawingMapRoutiere.drawMarker(origin.getPoint(), Color.GREEN, Color.GREEN, AlphaMode.OPAQUE);
+        // drawingMapRoutiere.drawMarker(destination.getPoint(), Color.RED, Color.RED, AlphaMode.OPAQUE);
         // drawingMapNonRoutiere.drawGraph(graphNonRoutiere);
 
-        ShortestPathData data = new ShortestPathData(graphRoutiere, origin, destination, ArcInspectorFactory.getAllFilters().get(0));
+        // ShortestPathData data = new ShortestPathData(graphRoutiere2, origin, destination, ArcInspectorFactory.getAllFilters().get(0));
 
         // try (final PathReader pathReader = new BinaryPathReader(
         // new DataInputStream(new BufferedInputStream(
@@ -123,19 +138,10 @@ public class Launch {
         // }
 
         // Test Dijkstra
-        DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(data);
-        ShortestPathSolution solution = dijkstra.run();
-        System.out.println("Shortest path : " + solution.toString());
+        // DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(data);
+        // ShortestPathSolution solution = dijkstra.run();
+        // System.out.println("Shortest path : " + solution.toString());
 
-        //pathName = solution.getPath();
-
-        try (final PathReader pathReader = new BinaryPathReader(
-            new DataInputStream(new BufferedInputStream(
-            new FileInputStream(pathName)))) ) {
-
-        pathMapRoutiere = pathReader.readPath(graphRoutiere);
-        drawingMapRoutiere.drawPath(pathMapRoutiere);
-        }
-
+        // drawingMapRoutiere.drawPath(solution.getPath());
     }
 }
