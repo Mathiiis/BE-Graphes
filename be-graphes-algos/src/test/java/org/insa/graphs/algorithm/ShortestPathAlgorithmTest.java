@@ -22,7 +22,7 @@ import org.junit.Test;
 
 public class ShortestPathAlgorithmTest {
 
-    private static Graph graphRoutiere, graphNonRoutiere;
+    private static Graph graphRoutiere, graphNonRoutiere, graphGuadeloupe;
 
     @BeforeClass
     public static void initAll() throws Exception {
@@ -35,13 +35,17 @@ public class ShortestPathAlgorithmTest {
                 new BufferedInputStream(new FileInputStream("../carre.mapgr"))))) {
             graphNonRoutiere = reader.read();
         }
+        try (GraphReader reader = new BinaryGraphReader(new DataInputStream(
+                new BufferedInputStream(new FileInputStream("../Guadeloupe.mapgr"))))) {
+            graphGuadeloupe = reader.read();
+        }
     }
 
     @Test
     public void testCheminInexistant() {
         // Origine et destination non connectées
-        ShortestPathData data = new ShortestPathData(graphNonRoutiere, 
-                graphNonRoutiere.get(0), graphNonRoutiere.get(1), 
+        ShortestPathData data = new ShortestPathData(graphGuadeloupe, 
+                graphGuadeloupe.get(31612), graphGuadeloupe.get(34555), 
                 ArcInspectorFactory.getAllFilters().get(0));
         DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(data);
         ShortestPathSolution solution = dijkstra.run();

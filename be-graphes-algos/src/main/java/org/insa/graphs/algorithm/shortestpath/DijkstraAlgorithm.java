@@ -63,7 +63,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         tas.insert(labels[origin.getId()]);
 
         // Algo Dijkstra
-        while (!labels[data.getDestination().getId()].isMarque()) {
+        while (!labels[data.getDestination().getId()].isMarque() && !tas.isEmpty()) {
             Label x = tas.deleteMin();
             x.setMarque(true);
             notifyNodeMarked(x.getSommet_courant());
