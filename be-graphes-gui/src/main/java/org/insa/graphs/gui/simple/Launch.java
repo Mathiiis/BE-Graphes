@@ -22,6 +22,7 @@ import org.insa.graphs.model.io.PathReader;
 
 import org.insa.graphs.algorithm.shortestpath.DijkstraAlgorithm;
 import org.insa.graphs.algorithm.ArcInspectorFactory;
+import org.insa.graphs.algorithm.shortestpath.AStarAlgorithm;
 import org.insa.graphs.algorithm.shortestpath.BellmanFordAlgorithm;
 import org.insa.graphs.algorithm.shortestpath.Label;
 import org.insa.graphs.algorithm.shortestpath.ShortestPathData;
@@ -89,26 +90,70 @@ public class Launch {
         }
     }
 
+    static void testDijkstra(Graph graph, Drawing drawingMap, int originID, int destID){
+        final Node origin;
+        final Node destination;
+
+        origin = graph.get(originID);
+        destination = graph.get(destID);
+
+        // mettre les points
+        drawingMap.drawMarker(origin.getPoint(), Color.GREEN, Color.GREEN, AlphaMode.OPAQUE);
+        drawingMap.drawMarker(destination.getPoint(), Color.RED, Color.RED, AlphaMode.OPAQUE);
+
+        // recuperer le data pour le parcours dijkstra
+        ShortestPathData data = new ShortestPathData(graph, origin, destination, ArcInspectorFactory.getAllFilters().get(0));
+
+        // Test Dijkstra
+        DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(data);
+        ShortestPathSolution solution = dijkstra.run();
+        System.out.println("Shortest path : " + solution.toString());
+
+        drawingMap.drawPath(solution.getPath(), Color.CYAN);
+    }
+
+    static void testAStar(Graph graph, Drawing drawingMap, int originID, int destID){
+        final Node origin;
+        final Node destination;
+
+        origin = graph.get(originID);
+        destination = graph.get(destID);
+
+        // mettre les points
+        drawingMap.drawMarker(origin.getPoint(), Color.GREEN, Color.GREEN, AlphaMode.OPAQUE);
+        drawingMap.drawMarker(destination.getPoint(), Color.RED, Color.RED, AlphaMode.OPAQUE);
+
+        // recuperer le data pour le parcours dijkstra
+        ShortestPathData data = new ShortestPathData(graph, origin, destination, ArcInspectorFactory.getAllFilters().get(0));
+
+        // Test A*
+        AStarAlgorithm astar = new AStarAlgorithm(data, 0);
+        ShortestPathSolution solution = astar.run();
+        System.out.println("Shortest path : " + solution.toString());
+
+        drawingMap.drawPath(solution.getPath(), Color.BLACK);
+    }
+
     public static void main(String[] args) throws Exception {
 
         // visit these directory to see the list of available files on commetud.
         // map routière : insa
         final String mapNameRoutiere = "../Maps/belgium.mapgr";
-        final String mapNameNonRoutiere = "../Maps/carre.mapgr";
+        //final String mapNameNonRoutiere = "../Maps/carre.mapgr";
         final String pathName = "../Maps/path_be_173101_302442.path";
 
         // origin
         final int originID = 173101;
-        final Node origin;
 
         // destination
         final int destID = 302442;
-        final Node destination;
 
         final Graph graph = createGraph(mapNameRoutiere);
         final Drawing drawGraph = drawGraph(graph);
 
         testPath(graph, drawGraph, pathName);
+        testDijkstra(graph, drawGraph, originID, destID);
+        testAStar(graph, drawGraph, originID, destID);
 
 
         // drawingMapNonRoutiere.drawGraph(graphRoutiere2);

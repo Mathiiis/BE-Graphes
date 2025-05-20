@@ -12,8 +12,19 @@ import org.insa.graphs.algorithm.AbstractSolution.Status;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
-    public DijkstraAlgorithm(ShortestPathData data) {
+    private final int natureCout;
+    private final int typeAlgo;
+
+    public DijkstraAlgorithm(ShortestPathData data, int natureCout, int typeAlgo) {
         super(data);
+        this.natureCout = natureCout;
+        this.typeAlgo = typeAlgo;
+    }
+
+    public DijkstraAlgorithm(ShortestPathData data){
+        super(data);
+        natureCout = 0;
+        typeAlgo = 0;
     }
 
     @Override
@@ -36,8 +47,15 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         BinaryHeap<Label> tas = new BinaryHeap<>();
 
         // Initialisation
-        for (Node node : graph.getNodes()) {
-            labels[node.getId()] = new Label(node);
+        if (this.typeAlgo == 1) { // A*
+            Node destination = data.getDestination();
+            for (Node node : graph.getNodes()) {
+                labels[node.getId()] = new LabelStar(node, destination);
+            }
+        } else { // Dijkstra
+            for (Node node : graph.getNodes()) {
+                labels[node.getId()] = new Label(node);
+            }
         }
 
         Node origin = data.getOrigin();
@@ -54,8 +72,17 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 
                 Label y = labels[arc.getDestination().getId()];
                 if (!y.isMarque()) {
-                    double newCost = x.getCout_realise() + data.getCost(arc); // PCC en distance
-                    //double newCost = x.getCout_realise() + arc.getMinimumTravelTime(); // PCC en temps
+                    double newCost;
+                    switch (this.natureCout) {
+                        case 1:
+                            newCost = x.getCout_realise() + arc.getMinimumTravelTime(); // PCC en temps
+                            break;
+                    
+                        default:          
+                            newCost = x.getCout_realise() + data.getCost(arc); // PCC en distance
+                            break;
+                    }
+                     
                     if (newCost < y.getCout_realise()) {
                         y.setCoutRealise(newCost);
                         y.setPere(arc);
