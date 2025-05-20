@@ -53,8 +53,8 @@ public class Launch {
         return basicDrawing;
     }
 
-    static void testPath(final String mapName, final String pathName) throws java.io.IOException {
-
+    static Graph createGraph(final String mapName) throws java.io.IOException {
+        
         final Graph graph;
         
         // create path reader
@@ -63,25 +63,29 @@ public class Launch {
 
             graph = reader.read();
         }
+        return graph;
+    }
 
+    static Drawing drawGraph(Graph graph){
         // draw the graph
-        final Drawing drawingMapRoutiere;
+        final Drawing drawingMap;
         try {
-            drawingMapRoutiere = createDrawing();
+            drawingMap = createDrawing();
         } catch (Exception e) {
             throw new RuntimeException("Failed to create drawing", e);
         }
-        drawingMapRoutiere.drawGraph(graph);
+        drawingMap.drawGraph(graph);
+        return drawingMap;
+    }
 
+    static void testPath(Graph graph, Drawing drawMap, final String pathName) throws java.io.IOException {
         // create path reader
         try (final PathReader pathReader = new BinaryPathReader(
             new DataInputStream(new BufferedInputStream(
             new FileInputStream(pathName)))) ) {
 
-            final Path pathMap = pathReader.readPath(graph);
-
-            // draw path on the map
-            drawingMapRoutiere.drawPath(pathMap);
+            final Path path = pathReader.readPath(graph);
+            drawMap.drawPath(path);
         }
     }
 
@@ -101,7 +105,10 @@ public class Launch {
         final int destID = 302442;
         final Node destination;
 
-        testPath(mapNameRoutiere, pathName);
+        final Graph graph = createGraph(mapNameRoutiere);
+        final Drawing drawGraph = drawGraph(graph);
+
+        testPath(graph, drawGraph, pathName);
 
 
         // drawingMapNonRoutiere.drawGraph(graphRoutiere2);
