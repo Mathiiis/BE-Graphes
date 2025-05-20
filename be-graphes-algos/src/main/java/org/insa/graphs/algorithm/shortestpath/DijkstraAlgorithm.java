@@ -44,7 +44,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         labels[origin.getId()].setCoutRealise(0.0);
         tas.insert(labels[origin.getId()]);
 
-        // Algo
+        // Algo Dijkstra
         while (!labels[data.getDestination().getId()].isMarque()) {
             Label x = tas.deleteMin();
             x.setMarque(true);
@@ -59,7 +59,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                     if (newCost < y.getCout_realise()) {
                         y.setCoutRealise(newCost);
                         y.setPere(arc);
-                        
+
+                        System.out.println("Nouveau coût optimal pour le nœud " + y + ": " + y.getCout_realise());
+
                         try {
                             tas.remove(y);
                         } catch (ElementNotFoundException e) {

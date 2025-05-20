@@ -18,7 +18,6 @@ public class Label implements Comparable<Label> {
     }
 
     // Setters
-
     public void setCoutRealise(Double coutRealise) {
         this.coutRealise = coutRealise;
     }
@@ -40,7 +39,7 @@ public class Label implements Comparable<Label> {
         return marque;
     }
 
-    public Double getCout_realise() {
+    public double getCout_realise() {
         return coutRealise;
     }
 
@@ -48,12 +47,23 @@ public class Label implements Comparable<Label> {
         return pere;
     }
 
-    public Double getCost() {
+    public double getCost() {
+        return coutRealise;
+    }
+
+    public double getTotalCost(){
         return coutRealise;
     }
 
     @Override
     public int compareTo(Label other) {
-        return Double.compare(this.getCost(), other.getCost());
+        int cmp = Double.compare(this.getTotalCost(), other.getTotalCost());
+        if (cmp == 0) {
+            // Si égalité, comparer les coûts estimés
+            if (this instanceof LabelStar && other instanceof LabelStar) {
+                return Double.compare(((LabelStar) this).getCoutEstime(), ((LabelStar) other).getCoutEstime());
+            }
+        }
+    return cmp;
     }
 }
