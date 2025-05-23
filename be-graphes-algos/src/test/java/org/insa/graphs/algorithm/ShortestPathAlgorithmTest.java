@@ -112,4 +112,35 @@ public class ShortestPathAlgorithmTest {
                      solutionAStar.getPath().getLength(), 1e-6);
 
     }
+
+    @Test
+    public void testTrajetCourtTemps() {
+        // Deux nœuds proches
+        ShortestPathData data = new ShortestPathData(graphRoutiere, 
+                graphRoutiere.get(0), graphRoutiere.get(10), 
+                ArcInspectorFactory.getAllFilters().get(0));
+        DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(data,1,0);
+        ShortestPathSolution solution = dijkstra.run();
+
+        assertEquals(Status.OPTIMAL, solution.getStatus());
+        assertTrue(solution.getPath().isValid());
+    }
+
+    @Test
+    public void testAStarTemps() {
+        // Test de l'algorithme A* et comparaison avec la solution de Dijkstra
+        ShortestPathData data = new ShortestPathData(graphRoutiere, 
+                graphRoutiere.get(0), graphRoutiere.get(10), 
+                ArcInspectorFactory.getAllFilters().get(0));
+        AStarAlgorithm aStar = new AStarAlgorithm(data,1);
+        DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(data,1,0);
+        ShortestPathSolution solutionAStar = aStar.run();
+        ShortestPathSolution solutionDijkstra = dijkstra.run();
+
+        assertEquals(Status.OPTIMAL, solutionAStar.getStatus());
+        assertTrue(solutionAStar.getPath().isValid());
+        assertEquals(solutionDijkstra.getPath().getLength(), 
+                     solutionAStar.getPath().getLength(), 1e-6);
+
+    }
 }
