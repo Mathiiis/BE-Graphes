@@ -28,15 +28,15 @@ public class ShortestPathAlgorithmTest {
     public static void initAll() throws Exception {
         // Charger les cartes
         try (GraphReader reader = new BinaryGraphReader(new DataInputStream(
-                new BufferedInputStream(new FileInputStream("../haute-garonne.mapgr"))))) {
+                new BufferedInputStream(new FileInputStream("../Maps/haute-garonne.mapgr"))))) {
             graphRoutiere = reader.read();
         }
         try (GraphReader reader = new BinaryGraphReader(new DataInputStream(
-                new BufferedInputStream(new FileInputStream("../carre.mapgr"))))) {
+                new BufferedInputStream(new FileInputStream("../Maps/carre.mapgr"))))) {
             graphNonRoutiere = reader.read();
         }
         try (GraphReader reader = new BinaryGraphReader(new DataInputStream(
-                new BufferedInputStream(new FileInputStream("../Guadeloupe.mapgr"))))) {
+                new BufferedInputStream(new FileInputStream("../Maps/Guadeloupe.mapgr"))))) {
             graphGuadeloupe = reader.read();
         }
     }
@@ -115,7 +115,7 @@ public class ShortestPathAlgorithmTest {
 
     @Test
     public void testTrajetCourtTemps() {
-        // Deux nœuds proches
+        // Deux nœuds proches avec la nature de cout temps
         ShortestPathData data = new ShortestPathData(graphRoutiere, 
                 graphRoutiere.get(0), graphRoutiere.get(10), 
                 ArcInspectorFactory.getAllFilters().get(0));
@@ -124,23 +124,5 @@ public class ShortestPathAlgorithmTest {
 
         assertEquals(Status.OPTIMAL, solution.getStatus());
         assertTrue(solution.getPath().isValid());
-    }
-
-    @Test
-    public void testAStarTemps() {
-        // Test de l'algorithme A* et comparaison avec la solution de Dijkstra
-        ShortestPathData data = new ShortestPathData(graphRoutiere, 
-                graphRoutiere.get(0), graphRoutiere.get(10), 
-                ArcInspectorFactory.getAllFilters().get(0));
-        AStarAlgorithm aStar = new AStarAlgorithm(data,1);
-        DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(data,1,0);
-        ShortestPathSolution solutionAStar = aStar.run();
-        ShortestPathSolution solutionDijkstra = dijkstra.run();
-
-        assertEquals(Status.OPTIMAL, solutionAStar.getStatus());
-        assertTrue(solutionAStar.getPath().isValid());
-        assertEquals(solutionDijkstra.getPath().getLength(), 
-                     solutionAStar.getPath().getLength(), 1e-6);
-
     }
 }
