@@ -127,7 +127,7 @@ public class Launch {
         ShortestPathData data = new ShortestPathData(graph, origin, destination, ArcInspectorFactory.getAllFilters().get(0));
 
         // Test A*
-        AStarAlgorithm astar = new AStarAlgorithm(data, 0);
+        AStarAlgorithm astar = new AStarAlgorithm(data);
         ShortestPathSolution solution = astar.run();
         System.out.println("Shortest path : " + solution.toString());
 

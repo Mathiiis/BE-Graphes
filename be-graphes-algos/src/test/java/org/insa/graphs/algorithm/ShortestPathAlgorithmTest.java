@@ -28,15 +28,15 @@ public class ShortestPathAlgorithmTest {
     public static void initAll() throws Exception {
         // Charger les cartes
         try (GraphReader reader = new BinaryGraphReader(new DataInputStream(
-                new BufferedInputStream(new FileInputStream("../Maps/haute-garonne.mapgr"))))) {
+                new BufferedInputStream(new FileInputStream("../haute-garonne.mapgr"))))) {
             graphRoutiere = reader.read();
         }
         try (GraphReader reader = new BinaryGraphReader(new DataInputStream(
-                new BufferedInputStream(new FileInputStream("../Maps/carre.mapgr"))))) {
+                new BufferedInputStream(new FileInputStream("../carre.mapgr"))))) {
             graphNonRoutiere = reader.read();
         }
         try (GraphReader reader = new BinaryGraphReader(new DataInputStream(
-                new BufferedInputStream(new FileInputStream("../Maps/Guadeloupe.mapgr"))))) {
+                new BufferedInputStream(new FileInputStream("../Guadeloupe.mapgr"))))) {
             graphGuadeloupe = reader.read();
         }
     }
@@ -119,7 +119,7 @@ public class ShortestPathAlgorithmTest {
         ShortestPathData data = new ShortestPathData(graphRoutiere, 
                 graphRoutiere.get(0), graphRoutiere.get(10), 
                 ArcInspectorFactory.getAllFilters().get(0));
-        DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(data,1,0);
+        DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(data);
         ShortestPathSolution solution = dijkstra.run();
 
         assertEquals(Status.OPTIMAL, solution.getStatus());

@@ -12,18 +12,15 @@ import org.insa.graphs.algorithm.AbstractSolution.Status;
 
 public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
-    private final int natureCout;
     private final int typeAlgo;
 
-    public DijkstraAlgorithm(ShortestPathData data, int natureCout, int typeAlgo) {
+    public DijkstraAlgorithm(ShortestPathData data, int typeAlgo) {
         super(data);
-        this.natureCout = natureCout;
         this.typeAlgo = typeAlgo;
     }
 
     public DijkstraAlgorithm(ShortestPathData data){
         super(data);
-        natureCout = 0;
         typeAlgo = 0;
     }
 
@@ -50,7 +47,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         if (this.typeAlgo == 1) { // A*
             Node destination = data.getDestination();
             for (Node node : graph.getNodes()) {
-                labels[node.getId()] = new LabelStar(node, destination);
+                labels[node.getId()] = new LabelStar(node, destination, data);
             }
         } else { // Dijkstra
             for (Node node : graph.getNodes()) {
@@ -73,15 +70,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 Label y = labels[arc.getDestination().getId()];
                 if (!y.isMarque()) {
                     double newCost;
-                    switch (this.natureCout) {
-                        case 1:
-                            newCost = x.getCout_realise() + arc.getMinimumTravelTime(); // PCC en temps
-                            break;
-                    
-                        default:          
-                            newCost = x.getCout_realise() + data.getCost(arc); // PCC en distance
-                            break;
-                    }
+                    newCost = x.getCout_realise() + data.getCost(arc);
                      
                     if (newCost < y.getCout_realise()) {
                         y.setCoutRealise(newCost);
